@@ -1,12 +1,18 @@
 const express = require('express');
+const connectDB = require('./config/db');
 const app = express();
 
 //Middleware to parse JSON
-app.use(express.json());
+app.use(express.json({ extended: false }));
+//Define routes
+app.use('/api/auth', require('./routes/auth'))
+app.use('/api/protected', require('./routes/protected'));
 const mongoose = require('mongoose');
 
 //Load environment variables
 require('dotenv').config();
+
+connectDB();
 
 //Encode the password from .env file
 const encodedPass = encodeURIComponent(process.env.MONGO_PASSWORD);
